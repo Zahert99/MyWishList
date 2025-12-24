@@ -3,7 +3,6 @@ import { lazyWithPreload } from "react-lazy-with-preload";
 import type { RouterProps, HomeViewProps, MyPageViewProps } from "../types.ts";
 import type { ComponentType } from "react";
 
-// Exportera lazy-loadade komponenter med korrekt typing
 export const HomeScreen = lazyWithPreload(
   () => import("../views/HomeView.tsx")
 ) as unknown as ComponentType<HomeViewProps> & { preload: () => Promise<any> };

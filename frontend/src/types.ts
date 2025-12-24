@@ -19,8 +19,8 @@ export interface Wishlist {
   list_title: string;
   is_private: boolean;
   created_at: string;
-  username?: string | undefined; // Explicit undefined
-  items_count?: number | undefined; // Explicit undefined
+  username?: string | undefined;
+  items_count?: number | undefined;
 }
 
 export interface CreateWishlistData {
