@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wishlist App Flow</title>
+
+    <!-- Mermaid -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+      mermaid.initialize({ startOnLoad: true });
+    </script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .explanation {
+        background: #f5f5f5;
+        padding: 20px;
+        border-radius: 8px;
+        margin: 20px 0;
+      }
+      .explanation h2 {
+        color: #1976d2;
+      }
+      .step {
+        margin: 10px 0;
+        padding: 10px;
+        background: white;
+        border-left: 4px solid #1976d2;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1 style="text-align: center">Wishlist App - Användarflöde</h1>
+
+    <div class="explanation">
+      <h2>🎯 Hur applikationen fungerar:</h2>
+
+      <div class="step">
+        <strong>1. Startsida (Alla användare):</strong><br />
+        Alla kan se publika önskelistor på startsidan, även utan att logga in.
+      </div>
+
+      <div class="step">
+        <strong>2. Inloggning (Valfritt):</strong><br />
+        Om användaren vill skapa egna listor måste hen logga in eller registrera
+        sig.
+      </div>
+
+      <div class="step">
+        <strong>3. Min Profil (Inloggade användare):</strong><br />
+        Efter inloggning kan användaren gå till "Min Profil" för att skapa nya
+        önskelistor.
+      </div>
+
+      <div class="step">
+        <strong>4. Skapa Lista:</strong><br />
+        På Min Profil-sidan klickar användaren på "Create List" och fyller i
+        formuläret (titel och privacy).
+      </div>
+
+      <div class="step">
+        <strong>5. Lägg till Önskemål:</strong><br />
+        När listan är skapad kan användaren klicka på listan och lägga till
+        items (titel, pris, länk).
+      </div>
+
+      <div class="step">
+        <strong>6. Visa Listor:</strong><br />
+        Användaren kan se sina egna listor på Min Profil och alla publika listor
+        på startsidan.
+      </div>
+    </div>
+
+    <pre class="mermaid">
+flowchart LR
+    Start([Användare besöker sidan])
+    
+    ViewPublic[Se publika önskelistor<br/>på startsidan]
+    
+    WantCreate{Vill skapa<br/>egen lista?}
+    
+    CheckAuth{Är användaren<br/>inloggad?}
+    
+    Login[LoginForm<br/>Logga in/Registrera]
+    
+    LoggedIn{Login<br/>lyckades?}
+    
+    Profile[Gå till Min Profil]
+    
+    ClickCreate[Klicka på<br/>Create List-knappen]
+    
+    CreateModal[Fyll i formuläret:<br/>- Listtitel<br/>- Private/Public]
+    
+    SaveList[Spara lista<br/>med JWT token]
+    
+    ListSaved[Lista skapad!]
+    
+    WantAddItem{Vill lägga till<br/>önskemål?}
+    
+    ClickList[Klicka på listan]
+    
+    AddItemForm[Fyll i formuläret:<br/>- Titel<br/>- Pris<br/>- Produktlänk]
+    
+    SaveItem[Spara item]
+    
+    ShowList[Visa önskelista<br/>med alla items]
+    
+    End([Klart!])
+
+    Start --> ViewPublic
+    ViewPublic --> WantCreate
+    
+    WantCreate -->|Nej| End
+    WantCreate -->|Ja| CheckAuth
+    
+    CheckAuth -->|Nej| Login
+    CheckAuth -->|Ja| Profile
+    
+    Login --> LoggedIn
+    LoggedIn -->|Nej| Login
+    LoggedIn -->|Ja| Profile
+    
+    Profile --> ClickCreate
+    ClickCreate --> CreateModal
+    CreateModal --> SaveList
+    SaveList --> ListSaved
+    
+    ListSaved --> WantAddItem
+    WantAddItem -->|Nej| ShowList
+    WantAddItem -->|Ja| ClickList
+    
+    ClickList --> AddItemForm
+    AddItemForm --> SaveItem
+    SaveItem --> ShowList
+    ShowList --> End
+
+    classDef startEnd fill:#e3f2fd,stroke:#1976d2,stroke-width:3px
+    classDef decision fill:#fff9c4,stroke:#f57f17,stroke-width:2px
+    classDef action fill:#c8e6c9,stroke:#388e3c,stroke-width:2px
+    classDef form fill:#f8bbd0,stroke:#c2185b,stroke-width:2px
+    classDef navigation fill:#e1bee7,stroke:#7b1fa2,stroke-width:2px
+
+    class Start,End startEnd
+    class WantCreate,CheckAuth,LoggedIn,WantAddItem decision
+    class ViewPublic,SaveList,SaveItem,ShowList,ListSaved action
+    class Login,CreateModal,AddItemForm form
+    class Profile,ClickCreate,ClickList navigation
+    </pre>
+  </body>
+</html>
